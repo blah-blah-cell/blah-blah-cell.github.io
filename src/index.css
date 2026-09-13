@@ -1,96 +1,62 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #08080a;
-  --bg-secondary: #0f0f13;
-  --bg-card: rgba(18, 18, 24, 0.7);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(255, 255, 255, 0.2);
-  --accent-emerald: #10b981;
-  --accent-cyan: #38bdf8;
-  --text-muted: #9ca3af;
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: #f3f4f6;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
-  selection-background-color: rgba(16, 185, 129, 0.2);
-  selection-color: #34d399;
+  background-color: #000000;
+  color: #ededed;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-code, pre, .font-mono {
-  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-/* Subtle background grid with radial fade mask */
-.hero-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
-  mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
-}
-
-/* 21st.dev Spotlight Border Effect */
-.spotlight-card {
-  position: relative;
-  background: rgba(15, 15, 20, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: border-color 0.25s ease, background 0.25s ease;
-}
-
-.spotlight-card::before {
-  content: '';
+/* Subtle top atmospheric glow (Linear / Rauno style) */
+.ambient-glow {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
-    rgba(255, 255, 255, 0.06),
-    transparent 40%
-  );
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  height: 280px;
+  background: radial-gradient(50% 50% at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
   pointer-events: none;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  z-index: 0;
 }
 
-.spotlight-card:hover::before {
-  opacity: 1;
+/* Subtle row hover state */
+.row-hover {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.spotlight-card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(18, 18, 25, 0.9);
+.row-hover:hover {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Scanline / CRT overlay effect for terminal */
-.crt-scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
-  );
-  background-size: 100% 4px;
-  pointer-events: none;
+/* Clean minimal links */
+.minimal-link {
+  color: #888888;
+  transition: color 0.15s ease;
+}
+
+.minimal-link:hover {
+  color: #ffffff;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #08080a;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 4px;
+  background: #222222;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #333333;
 }
