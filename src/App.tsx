@@ -491,7 +491,7 @@ export default function App() {
           <div className="space-y-3 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs font-mono text-zinc-400">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>GRADE 11 RESEARCHER • BENGALURU, INDIA</span>
+              <span>GRADE 11 RESEARCHER • SYSTEMS & OFFENSIVE SECURITY</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
@@ -747,7 +747,7 @@ export default function App() {
         <footer className="pt-12 border-t border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs text-zinc-500">
           <div className="space-y-1">
             <div className="text-white font-semibold">Ojas Mehta</div>
-            <div>Bengaluru, India • First-Principles Systems & Security</div>
+            <div>First-Principles Systems Engineering & Security</div>
           </div>
 
           <div className="flex items-center gap-3">
