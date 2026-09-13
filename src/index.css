@@ -6,57 +6,77 @@
 }
 
 body {
-  background-color: #000000;
+  background-color: #030305;
   color: #ededed;
   font-family: var(--font-sans);
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Subtle top atmospheric glow (Linear / Rauno style) */
-.ambient-glow {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 800px;
-  height: 280px;
-  background: radial-gradient(50% 50% at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
+/* Animated Border Beam (21st.dev MagicUI Style) */
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.border-beam {
   pointer-events: none;
-  z-index: 0;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  mask: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 }
 
-/* Subtle row hover state */
-.row-hover {
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+.border-beam::after {
+  content: "";
+  position: absolute;
+  aspect-ratio: 1;
+  width: 120px;
+  background: linear-gradient(to left, #10b981, #38bdf8, transparent);
+  offset-path: rect(0 auto auto 0 round 1rem);
+  animation: border-beam 6s infinite linear;
 }
 
-.row-hover:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+/* 3D Perspective Card Container */
+.perspective-container {
+  perspective: 1000px;
 }
 
-/* Clean minimal links */
-.minimal-link {
-  color: #888888;
-  transition: color 0.15s ease;
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, border-color 0.25s ease, box-shadow 0.25s ease;
+  background: rgba(12, 12, 16, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.minimal-link:hover {
-  color: #ffffff;
+.card-3d:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(16, 185, 129, 0.15);
+}
+
+/* Glowing Ambient Badge */
+.glow-badge {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #030305;
 }
 ::-webkit-scrollbar-thumb {
-  background: #222222;
-  border-radius: 2px;
+  background: #222226;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #333333;
+  background: #383842;
 }
